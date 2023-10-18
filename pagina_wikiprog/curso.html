@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="curso.css">
+    <title>Tu Página de Videos</title>
+</head>
+<body>
+    <header>
+        <h1>Bienvenido a Mi Página de Videos</h1>
+    </header>
+    
+    <section class="content">
+        <section class="video">
+            <video controls>
+                <source src="video.mp4" type="video/mp4">
+                Tu navegador no admite la reproducción de video.
+            </video>
+            <h2>Título del Video</h2>
+            <p>Descripción del video.</p>
+            <p>Categoría: <span class="categoria">Educación</span></p>
+        </section>
+        
+        <section class="comentarios">
+            <h2>Comentarios</h2>
+            <ul>
+                <li>
+                    <h3>Usuario 1</h3>
+                    <p>¡Excelente video! Gracias por compartirlo.</p>
+                </li>
+                <li>
+                    <h3>Usuario 2</h3>
+                    <p>Muy informativo. ¿Puedes proporcionar más detalles sobre el tema?</p>
+                </li>
+            </ul>
+            <section id="comment-form" style="display: none;">
+                <h2>Añadires Comentario</h2>
+                <form action="" method="POST"> <!-- Deja el atributo "action" en blanco para enviar el formulario a la misma página -->
+                    <label for="username">Nombre de Usuario:</label>
+                    <input type="text" id="username" name="usuario_id" required><br>
+                    <label for="comment-text">Comentario:</label>
+                    <textarea id="comment-text" name="comentarios" rows="4" required></textarea><br>
+                    <button type="submit">Enviar Comentario</button>
+                </form>
+            </section>
+            
+            <!-- Botón para mostrar el formulario de comentarios -->
+            <button id="add-comment-button" onclick="showCommentForm()" style="background-color: #ffffff; border: 1px solid #cccccc; color: #333333; padding: 10px 20px; font-size: 14px; border-radius: 4px; cursor: pointer; transition: background-color 0.3s, color 0.3s;">Añadir Comentario</button>
+                        
+            <!-- Mensaje de éxito (inicialmente oculto) -->
+            <p id="comment-success-message" style="display: none;">¡Comentario enviado con éxito!</p>
+        </section>
+    </section>
+
+    <aside class="lecciones">
+        <h2>Lecciones</h2>
+        <ul>
+            <li class="categoria">Categoría 1</li>
+            <ul>
+                <a href="leccion.php"><li>Lección 1</li></a>
+                <li>Lección 2</li>
+                <li>Lección 3</li>
+            </ul>
+            <li class="categoria">Categoría 2</li>
+            <ul>
+                <li>Lección 1</li>
+                <li>Lección 2</li>
+            </ul>
+        </ul>
+    </aside>
+    
+
+    <script>
+        // Función para mostrar el formulario de comentarios
+        function showCommentForm() {
+            const commentForm = document.getElementById("comment-form");
+            const addCommentButton = document.getElementById("add-comment-button");
+    
+            commentForm.style.display = "block";
+            addCommentButton.style.display = "none";
+        }
+    
+        // Función para enviar un comentario al servidor
+        function submitComment() {
+            // Obtener los datos del formulario de comentarios
+            const username = document.getElementById("username").value;
+            const commentText = document.getElementById("comment-text").value;
+    
+            // Crear un objeto FormData para enviar los datos
+            const formData = new FormData();
+            formData.append("usuario_id", username);
+            formData.append("comentarios", commentText);
+    
+            // Enviar los datos al servidor usando Fetch API
+            fetch("procesar_comentario.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Verificar la respuesta del servidor
+                if (data.success) {
+                    // El comentario se insertó correctamente
+                    const commentForm = document.getElementById("comment-form");
+                    const commentSuccessMessage = document.getElementById("comment-success-message");
+    
+                    commentForm.style.display = "none";
+                    commentSuccessMessage.style.display = "block";
+                } else {
+                    // Hubo un error al insertar el comentario
+                    alert("Hubo un error al enviar el comentario.");
+                }
+            })
+            .catch(error => {
+                console.error("Error al enviar la solicitud:", error);
+            });
+        }
+    </script>
+    
+</body>
+</html>

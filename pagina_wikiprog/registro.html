@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <link rel="stylesheet" href="registro.css">
+</head>
+<body>
+    <div class="container">
+        <div class="registro-container">
+            <h2>Registro de Usuario</h2>
+            <form action="registro.php" method="POST" id="registro-form">
+                <div class="input-container">
+                    <label for="usuario">Usuario:</label>
+                    <input type="text" name="usuario" id="usuario" required>
+                </div>
+                <div class="input-container">
+                    <label for="correo">Correo:</label>
+                    <input type="email" name="correo" id="correo" required>
+                </div>
+                <div class="input-container">
+                    <label for="contraseña">Contraseña:</label>
+                    <input type="password" name="contraseña" id="contraseña" required>
+                </div>
+                <div class="terminos">
+                    <input type="checkbox" name="terminos_y_condiciones" id="terminos_y_condiciones" required>
+                    <label for="terminos_y_condiciones">Acepto los términos y condiciones</label>
+                </div>
+                <button type="submit">Registrarse</button>   
+            </form>
+            <br>
+            <form action="login.html"><button type="submit">iniciar sesion</button></form> 
+                 
+
+        </div>
+        <div id="notification"></div>
+    </div>
+    <script>
+        // Función para mostrar notificaciones
+        function showNotification(message, type) {
+            const notificationDiv = document.getElementById("notification");
+            const notification = document.createElement("div");
+            notification.textContent = message;
+    
+            // Aplicar clase CSS según el tipo de notificación
+            notification.className = type;
+    
+            notificationDiv.appendChild(notification);
+    
+            setTimeout(() => {
+                notificationDiv.removeChild(notification);
+            }, 3000); // Ocultar la notificación después de 3 segundos
+        }
+    
+        // Manejar la respuesta del formulario con JavaScript
+        const registroForm = document.getElementById("registro-form");
+        registroForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+    
+            // Realizar una solicitud AJAX para enviar los datos al servidor (puedes usar Fetch API o XMLHttpRequest)
+            fetch("registro.php", {
+                method: "POST",
+                body: new FormData(registroForm),
+            })
+            .then(response => response.text())
+            .then(data => {
+                // Mostrar la respuesta del servidor como notificación
+                showNotification(data, data.includes("exitoso") ? "success" : "error");
+            })
+            .catch(error => {
+                console.error("Error en la solicitud:", error);
+                showNotification("Error en la solicitud", "error");
+            });
+        });
+    </script>
+    
+</body>
+</html>
