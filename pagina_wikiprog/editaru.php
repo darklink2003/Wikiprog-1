@@ -38,3 +38,16 @@ function delete_user($usuario, $correo, $contraseña){
 }
 
 ?>
+
+if (isset($_GET['id'])) {
+    $id=$_GET['id'];
+    $eliminar="DELETE FROM usuarios WHERE usuario_id=$id";
+    $resultado_eliminar=mysqli_query($conexion, $eliminar);
+
+
+if($resultado_eliminar){
+    header('location:Formulario.php?delete=2');
+} 
+else 
+    echo "no se elimino";
+}

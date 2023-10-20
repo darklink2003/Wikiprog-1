@@ -1,36 +1,29 @@
 <?php
 
+include("funciones.php");
+
 require('config.php');
+
 $conexion = mysqli_connect($host, $user, $password, $database);
 
-// Verifica existente
-function verificarExistencia($conexion, $usuario, $correo) {
-    $consulta_existencia = "SELECT * FROM registrar WHERE usuario = '$usuario' OR correo = '$correo'";
-    $resultado_existencia = mysqli_query($conexion, $consulta_existencia);
-    return mysqli_num_rows($resultado_existencia) > 0;
-}
-
-// Insertar base de datos
-function realizarRegistro($conexion, $usuario, $correo, $contraseña, $terminos_y_condiciones) {
-    $consulta = "INSERT INTO registrar (usuario, correo, contraseña, terminos_y_condiciones) VALUES ('$usuario', '$correo', '$contraseña', '$terminos_y_condiciones')";
-    $resultado = mysqli_query($conexion, $consulta);
-    return $resultado;
-}
 
 // Saca datos del formulario
-$usuario = $_POST['usuario'];
-$correo = $_POST['correo'];
-$contraseña = $_POST['contraseña'];
-$terminos_y_condiciones = isset($_POST['terminos_y_condiciones']) ? 1 : 0;
+$usuario = $_GET['usuario'];
+$correo = $_GET['correo'];
+$contraseña = $_GET['contraseña'];
+$tyc = isset($_GET['tyc']) ? 0 : 1;
 
 if (verificarExistencia($conexion, $usuario, $correo)) {
     // Usuario duplicado
     echo "El usuario o el correo ya existe";
+    exit;
 } else {
-    if (realizarRegistro($conexion, $usuario, $correo, $contraseña, $terminos_y_condiciones)) {
+    // if (realizarRegistro($conexion, $usuario, $correo, $contraseña)) {
+    if (realizarRegistro($conexion, $usuario, $correo, $contraseña, $tyc)) {
+
         // Usuario registrado bien
-        echo "¡Registro exitoso!";
-    } else {
+        header( "location: login2.php" );
+        } else {
         // Usuario registrado mal
         echo "El registro ha fallado. Por favor, inténtalo de nuevo.";
     }
