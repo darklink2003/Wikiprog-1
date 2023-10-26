@@ -101,6 +101,25 @@ function consultaId($conexion, $registrar_id) {
 
 //--------------------------------------------------------------------------------------------
 
+function consulta_ID($conexion, $registrar_id) {
+    $consulta = "SELECT * FROM registrar WHERE registrar_id = '$registrar_id'";
+
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado && mysqli_num_rows($resultado) > 0) {
+        $fila = mysqli_fetch_assoc($resultado);
+
+        return "Nombre Usuario: " . $fila['usuario'] . "<br>" .
+               "Email: " . $fila['correo'] . "<br>" .
+               "Contraseña: " . $fila['contraseña'] . "<br>";
+
+    } else { 
+        return "Usuario no encontrado.";
+    }
+}
+
+//--------------------------------------------------------------------------------------------
+
 function biografia($conexion, $registrar_id) {
     $consulta = "SELECT * FROM usuario WHERE usuario_id = '$registrar_id'";
 
@@ -145,8 +164,21 @@ function borrar($conexion, $registrar_id) {
 
 //--------------------------------------------------------------------------------------------
 
-function editar($conexion, $registrar_id, $usuario, $correo, $contraseña) {
-    $query = "UPDATE usuarios SET usuario = '$usuario', correo = '$correo', contraseña = '$contraseña' WHERE id = $registrar_id";
-    
-    return mysqli_query($conexion, $query);
+
+function editarUsuario($conexion, $registrar_id, $usuario, $correo, $contraseña) {
+    $usuario = mysqli_real_escape_string($conexion, $usuario);
+    $correo = mysqli_real_escape_string($conexion, $correo);
+    $contraseña = mysqli_real_escape_string($conexion, $contraseña);
+
+    $sql = "UPDATE registrar SET usuario = '$usuario', correo = '$correo', contraseña = '$contraseña' WHERE registrar_id = $registrar_id";
+
+    return mysqli_query($conexion, $sql);
+}
+
+function editarBiografia($conexion, $registrar_id, $biografia) {
+    $biografia = mysqli_real_escape_string($conexion, $biografia);
+
+    $sql = "UPDATE usuario SET biografia = '$biografia' WHERE usuario_id = $registrar_id";
+
+    return mysqli_query($conexion, $sql);
 }

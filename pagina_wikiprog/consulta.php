@@ -18,5 +18,7 @@ echo $resultados;
 ?>
 
 <a href="borrar.php?registrar_id=<?php echo $registrar_id?>">Borrar Datos</a>
-<a href="editar.php?registrar_id=<?php echo $registrar_id?>">Editar Datos</a> 
+<a href="editar.php?registrar_id=<?php echo $registrar_id?>">Editar Datos</a> <br> <br>
+<a href="index.php?registrar_id=<?php echo $registrar_id?>">INICIO</a> 
+
 
