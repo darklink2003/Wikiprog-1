@@ -74,17 +74,79 @@ function consultaUsuario($conexion, $usuario) {
     if ($resultado && mysqli_num_rows($resultado) > 0) {
         $fila = mysqli_fetch_assoc($resultado);
 
-        return "Nombre: " . $fila['usuario'] . "<br>" .
+        return "Nombre Usuario: " . $fila['usuario'] . "<br>" .
                "Email: " . $fila['correo'] . "<br>" .
-               "Contraseña: " . $fila['contraseña'] . "<br>";
+               "Biografía: " . $fila['contraseña'] . "<br>";
     } else {
         return "Usuario no encontrado.";
     }
 }
 
-function borrar($conexion, $usuario) {
-    $consulta = "DELETE FROM registrar WHERE usuario = '$usuario'";
+//--------------------------------------------------------------------------------------------
+
+function consultaId($conexion, $registrar_id) {
+    $consulta = "SELECT * FROM registrar WHERE registrar_id = '$registrar_id'";
+
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado && mysqli_num_rows($resultado) > 0) {
+        $fila = mysqli_fetch_assoc($resultado);
+
+        return "Nombre Usuario: " . $fila['usuario'] . "<br>" .
+               "Email: " . $fila['correo'] . "<br>";
+    } else { 
+        return "Usuario no encontrado.";
+    }
+}
+
+//--------------------------------------------------------------------------------------------
+
+function biografia($conexion, $registrar_id) {
+    $consulta = "SELECT * FROM usuario WHERE usuario_id = '$registrar_id'";
+
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado && mysqli_num_rows($resultado) > 0) {
+        $fila = mysqli_fetch_assoc($resultado);
+
+        return 
+               "Biografía: " . $fila['biografia'] . "<br>";
+    } else { 
+        return "Usuario no encontrado.";
+    }
+}
+
+//--------------------------------------------------------------------------------------------
+
+function consulta_Contra($conexion, $registrar_id) {
+    $consulta = "SELECT * FROM registrar WHERE registrar_id = '$registrar_id'";
+
+    $resultado = mysqli_query($conexion, $consulta);
+
+    if ($resultado && mysqli_num_rows($resultado) > 0) {
+        $fila = mysqli_fetch_assoc($resultado);
+
+        return 
+               "Contraseña: " . $fila['contraseña'] . "<br>";
+    } else { 
+        return "Usuario no encontrado.";
+    }
+}
+
+
+//--------------------------------------------------------------------------------------------
+
+function borrar($conexion, $registrar_id) {
+    $consulta = "DELETE FROM registrar WHERE registrar_id = '$registrar_id'";
     $resultado = mysqli_query($conexion, $consulta);
 
     return $resultado;
+}
+
+//--------------------------------------------------------------------------------------------
+
+function editar($conexion, $registrar_id, $usuario, $correo, $contraseña) {
+    $query = "UPDATE usuarios SET usuario = '$usuario', correo = '$correo', contraseña = '$contraseña' WHERE id = $registrar_id";
+    
+    return mysqli_query($conexion, $query);
 }

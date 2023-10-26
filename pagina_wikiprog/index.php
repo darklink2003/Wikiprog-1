@@ -6,12 +6,8 @@ $conexion = mysqli_connect($host, $user, $password, $database);
 
 $registrar_id = $_GET['registrar_id'];
 
-if (borrar($conexion, $registrar_id)) {
-    echo "Usuario eliminado con éxito.";
-} else {
-    echo "No se pudo eliminar el usuario.";
-}
-
-mysqli_close($conexion);
-
 ?>
+
+<a href="cursos.php?registrar_id=<?php echo $registrar_id?>">Cursos</a>
+<a href="consulta.php?registrar_id=<?php echo $registrar_id?>">Pefil</a> 
+

@@ -19,7 +19,7 @@
             <div class="header-actions">
                 <a href="perfil.php">   <button class="action-button"><img src="IMG/notificacion.png" width="20px" alt="notificacion"></button></a>
                 <a href="perfil.php">   <button class="action-button"><img src="IMG/flecha.png" width="20px" alt="herramientas"></button></a> 
-                <a href="perfil.html">   <button class="action-button"><img src="IMG/usuario 2.png" width="20px" alt="usuario"></button></a>
+                <a href="perfil.html?registrar_id=<?php registrar_id=" . $registrar_id?">   <button class="action-button"><img src="IMG/usuario 2.png" width="20px" alt="usuario"></button></a>
             </div>
         </div>
     </header>
@@ -70,3 +70,6 @@
     </footer>
 </body>
 </html>
+<?php 
+    $usuario = $_GET['usuario'];
+?>

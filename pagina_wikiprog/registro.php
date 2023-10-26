@@ -22,7 +22,7 @@ if (verificarExistencia($conexion, $usuario, $correo)) {
     if (realizarRegistro($conexion, $usuario, $correo, $contraseña, $tyc)) {
 
         // Usuario registrado bien
-        header( "location: login2.php" );
+        header( "location: login.php" );
         } else {
         // Usuario registrado mal
         echo "El registro ha fallado. Por favor, inténtalo de nuevo.";

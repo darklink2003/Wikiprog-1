@@ -4,8 +4,10 @@ require('config.php');
 
 $conexion = mysqli_connect($host, $user, $password, $database);
 
+$registrar_id = $_GET['registrar_id'];
+
 // Consulta SQL para obtener los primeros 10 registros de usuarios ordenados por usuario_id de forma ascendente (ASC)
-$resultadoUsuarios = $conexion->query("SELECT * FROM usuario ORDER BY usuario_id ASC LIMIT 10");
+$resultadoUsuarios = $conexion->query("SELECT * FROM registrar ORDER BY registrar_id ASC LIMIT 10");
 ?>
 
 <h2>Datos de Usuarios</h2>
@@ -15,19 +17,17 @@ $resultadoUsuarios = $conexion->query("SELECT * FROM usuario ORDER BY usuario_id
         <th>Nombre</th>
         <th>Correo</th>
         <th>Password</th>
-        <th>Biografia</th>
-        <th>Rango ID</th>
+        <th>Terminos Y Condiciones</th>
     </tr>
     <?php
     if ($resultadoUsuarios->num_rows > 0) {
         while ($fila = mysqli_fetch_assoc($resultadoUsuarios)) {
             echo '<tr>';
-            echo '<td>' . $fila['usuario_id'] . '</td>';
+            echo '<td>' . $fila['registrar_id'] . '</td>';
             echo '<td>' . $fila['usuario'] . '</td>';
             echo '<td>' . $fila['correo'] . '</td>';
             echo '<td>' . $fila['contraseña'] . '</td>';
-            echo '<td>' . $fila['biografia'] . '</td>';
-            echo '<td>' . $fila['rango_id'] . '</td>';
+            echo '<td>' . $fila['tyc'] . '</td>';
             echo '</tr>';
         }
     } else {

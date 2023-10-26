@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $registrar_id = obtenerUsuarioID($conexion, $usuario);
 
         if ($registrar_id !== false) {
-            header("Location: index.html?registrar_id=" . $registrar_id);
+            header("Location: index.php?registrar_id=" . $registrar_id);
             exit;
         } else {
             echo "Inicio de sesión fallido. Verifica tus credenciales.";
