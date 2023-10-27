@@ -1,33 +1,39 @@
 <?php
-
+// Va a incluir las funciones necesarias del archivo "funciones.php"
 include("funciones.php");
 
+// Va a requerir el archivo de configuración "config.php" que contiene los datos de conexión a la base de datos
 require('config.php');
 
+// Establece una conexión con la base de datos utilizando los valores de "config.php"
 $conexion = mysqli_connect($host, $user, $password, $database);
 
+// Obtiene los datos del formulario a través de la superglobal $_GET
+$usuario = $_GET['usuario']; // Obtén el nombre de usuario
+$correo = $_GET['correo'];   // Obtén la dirección de correo
+$contraseña = $_GET['contraseña']; // Obtén la contraseña
+$tyc = isset($_GET['tyc']) ? 0 : 1; // Verifica si se aceptaron los términos y condiciones
 
-// Saca datos del formulario
-$usuario = $_GET['usuario'];
-$correo = $_GET['correo'];
-$contraseña = $_GET['contraseña'];
-$tyc = isset($_GET['tyc']) ? 0 : 1;
-
-if (verificarExistencia($conexion, $usuario, $correo)) {
-    // Usuario duplicado
-    echo "El usuario o el correo ya existe";
-    exit;
+// Verificar si los campos obligatorios no están vacíos
+if (empty($usuario) || empty($correo) || empty($contraseña)) {
+    echo "Por favor, completa todos los campos obligatorios.";
 } else {
-    // if (realizarRegistro($conexion, $usuario, $correo, $contraseña)) {
-    if (realizarRegistro($conexion, $usuario, $correo, $contraseña, $tyc)) {
-
-        // Usuario registrado bien
-        header( "location: login.php" );
+    // Verificar si el usuario o correo ya existen en la base de datos
+    if (verificarExistencia($conexion, $usuario, $correo)) {
+        // Usuario duplicado
+        echo "El usuario o el correo ya existe.";
+    } else {
+        // Realizar el registro del usuario
+        if (realizarRegistro($conexion, $usuario, $correo, $contraseña, $tyc)) {
+            // Usuario registrado exitosamente
+            header("location: login.php"); // Redirige al usuario a la página de inicio de sesión
         } else {
-        // Usuario registrado mal
-        echo "El registro ha fallado. Por favor, inténtalo de nuevo.";
+            // Registro fallido
+            echo "El registro ha fallado. Por favor, inténtalo de nuevo.";
+        }
     }
 }
 
+// Cierra la conexión a la base de datos
 mysqli_close($conexion);
 ?>

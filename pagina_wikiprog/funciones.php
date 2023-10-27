@@ -3,7 +3,6 @@
 
 //LOGIN//
 
-
 /**
  * Conecta a una base de datos MySQL usando PHP.
  *
@@ -25,7 +24,8 @@ function conectarBaseDeDatos() {
 
     return $conexion;
 }
-//------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------
 /**
  * Autentica a un usuario en una base de datos MySQL usando PHP.
  *
@@ -34,7 +34,6 @@ function conectarBaseDeDatos() {
  *
  * @return bool Devuelve `true` si la autenticación fue exitosa, `false` si la autenticación falló.
  */
-
 function autenticarUsuario($usuario, $contraseña) {
     $conexion = conectarBaseDeDatos();
 
@@ -55,10 +54,8 @@ function autenticarUsuario($usuario, $contraseña) {
 
 //--------------------------------------------------------------------------------------------
 
-
 //REGISTRO//
 
-// Verifica existente
 /**
  * Verifica la existencia de un usuario o correo electrónico en una base de datos MySQL usando PHP.
  *
@@ -74,7 +71,7 @@ function verificarExistencia($conexion, $usuario, $correo) {
     return mysqli_num_rows($resultado_existencia) > 0;
 }
 
-// Insertar base de datos
+//--------------------------------------------------------------------------------------------
 
 /**
  * Realiza un registro de usuario en una base de datos MySQL usando PHP.
@@ -115,6 +112,7 @@ function obtenerUsuarioID($conexion, $usuario) {
 }
 
 //--------------------------------------------------------------------------------------------
+
 /**
  * Consulta los datos de un usuario en una base de datos MySQL usando PHP.
  *
@@ -182,7 +180,6 @@ function consulta_ID($conexion, $registrar_id) {
         return "Nombre Usuario: " . $fila['usuario'] . "<br>" .
                "Email: " . $fila['correo'] . "<br>" .
                "Contraseña: " . $fila['contraseña'] . "<br>";
-
     } else {
         return "Usuario no encontrado.";
     }
@@ -236,7 +233,6 @@ function consulta_Contra($conexion, $registrar_id) {
     }
 }
 
-
 //--------------------------------------------------------------------------------------------
 /**
  * Borra un registro de una base de datos MySQL usando PHP.
@@ -254,8 +250,34 @@ function borrar($conexion, $registrar_id) {
 }
 
 //--------------------------------------------------------------------------------------------
+/**
+ * Borra un registro de una base de datos MySQL usando PHP.
+ *
+ * @param mysqli $conexion La conexión a la base de datos.
+ * @param int $registrar_id El ID del registro que se va a borrar.
+ *
+ * @return bool True si la consulta se ha ejecutado correctamente, false si la consulta no se ha ejecutado correctamente.
+ */
+function borrarBio($conexion, $registrar_id) {
+    $consulta = "DELETE FROM usuario WHERE usuario_id = '$registrar_id'";
+    $resultado = mysqli_query($conexion, $consulta);
 
+    return $resultado;
+}
 
+//--------------------------------------------------------------------------------------------
+
+/**
+ * Edita los datos de un usuario en una base de datos MySQL usando PHP.
+ *
+ * @param mysqli $conexion La conexión a la base de datos.
+ * @param int $registrar_id El ID del usuario que se va a editar.
+ * @param string $usuario El nuevo nombre de usuario.
+ * @param string $correo El nuevo correo electrónico.
+ * @param string $contraseña La nueva contraseña.
+ *
+ * @return bool True si la consulta se ha ejecutado correctamente, false si la consulta no se ha ejecutado correctamente.
+ */
 function editarUsuario($conexion, $registrar_id, $usuario, $correo, $contraseña) {
     $usuario = mysqli_real_escape_string($conexion, $usuario);
     $correo = mysqli_real_escape_string($conexion, $correo);
@@ -266,10 +288,24 @@ function editarUsuario($conexion, $registrar_id, $usuario, $correo, $contraseña
     return mysqli_query($conexion, $sql);
 }
 
+//--------------------------------------------------------------------------------------------
+/**
+ * Actualiza la biografía de un usuario en la base de datos.
+ *
+ * @param mysqli $conexion - La conexión activa a la base de datos.
+ * @param int $registrar_id - El ID del usuario cuya biografía se va a actualizar.
+ * @param string $biografia - La nueva biografía que se asignará al usuario.
+ *
+ * @return bool - Devuelve true si la actualización fue exitosa, false en caso de error.
+ */
 function editarBiografia($conexion, $registrar_id, $biografia) {
+    // Escapa caracteres especiales en la biografía para evitar inyecciones SQL.
     $biografia = mysqli_real_escape_string($conexion, $biografia);
 
+    // Construye la consulta SQL para actualizar la biografía del usuario.
     $sql = "UPDATE usuario SET biografia = '$biografia' WHERE usuario_id = $registrar_id";
 
+    // Ejecuta la consulta y devuelve el resultado (true si es exitosa, false si hay un error).
     return mysqli_query($conexion, $sql);
 }
+

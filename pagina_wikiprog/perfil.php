@@ -1,41 +1,31 @@
 <?php
+// Va a incluir las funciones necesarias del archivo "funciones.php"
+include("funciones.php");
 
+// Va a requerir el archivo de configuración "config.php" que contiene los datos de conexión a la base de datos
 require('config.php');
 
+// Establece una conexión con la base de datos utilizando los valores de "config.php"
 $conexion = mysqli_connect($host, $user, $password, $database);
 
+// Obtiene el valor del parámetro "registrar_id" desde la URL para identificar al usuario
 $registrar_id = $_GET['registrar_id'];
 
-// Consulta SQL para obtener los primeros 10 registros de usuarios ordenados por usuario_id de forma ascendente (ASC)
-$resultadoUsuarios = $conexion->query("SELECT * FROM registrar ORDER BY registrar_id ASC LIMIT 10");
-?>
+// Realiza una consulta para obtener información sobre el usuario identificado por "registrar_id"
+$resultados = consultaId($conexion, $registrar_id);
 
-<h2>Datos de Usuarios</h2>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Correo</th>
-        <th>Password</th>
-        <th>Terminos Y Condiciones</th>
-    </tr>
-    <?php
-    if ($resultadoUsuarios->num_rows > 0) {
-        while ($fila = mysqli_fetch_assoc($resultadoUsuarios)) {
-            echo '<tr>';
-            echo '<td>' . $fila['registrar_id'] . '</td>';
-            echo '<td>' . $fila['usuario'] . '</td>';
-            echo '<td>' . $fila['correo'] . '</td>';
-            echo '<td>' . $fila['contraseña'] . '</td>';
-            echo '<td>' . $fila['tyc'] . '</td>';
-            echo '</tr>';
-        }
-    } else {
-        echo '<tr><td colspan="5">No se encontraron resultados para usuarios.</td></tr>';
-    }
-    ?>
-</table>
+// Obtiene la biografía del usuario identificado por "registrar_id"
+$resultados .= biografia($conexion, $registrar_id);
 
-<?php
+// Cierra la conexión a la base de datos
 mysqli_close($conexion);
+
+// Muestra los resultados obtenidos (información del usuario y biografía)
+echo $resultados;
 ?>
+
+<!-- Enlaces a otras páginas -->
+<a href="borrar.php?registrar_id=<?php echo $registrar_id?>">Borrar Datos</a>
+<a href="editar.php?registrar_id=<?php echo $registrar_id?>">Editar Datos</a>
+<a href="login.php?">Cerrar Sesión</a> <br> <br>
+<a href="index.php?registrar_id=<?php echo $registrar_id?>">INICIO</a>
