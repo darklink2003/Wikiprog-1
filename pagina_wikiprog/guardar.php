@@ -11,7 +11,7 @@ $contraseña = $_GET['contraseña'];
 
 
 
-if (editar($conexion, $registrar_id)) {
+if (borrar($conexion, $registrar_id)) {
     echo "Usuario editado con éxito.";
 } else {
     echo "No se pudo editar el usuario.";

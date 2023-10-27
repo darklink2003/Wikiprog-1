@@ -3,6 +3,17 @@
 
 //LOGIN//
 
+
+/**
+ * Conecta a una base de datos MySQL usando PHP.
+ *
+ * @param string $host El nombre del host del servidor MySQL.
+ * @param string $user El nombre de usuario de la base de datos.
+ * @param string $password La contraseña de la base de datos.
+ * @param string $database El nombre de la base de datos a la que conectarse.
+ *
+ * @return mysqli|false Devuelve la conexión a la base de datos o `false` si la conexión no se pudo establecer.
+ */
 function conectarBaseDeDatos() {
     global $host, $user, $password, $database;
 
@@ -14,6 +25,15 @@ function conectarBaseDeDatos() {
 
     return $conexion;
 }
+//------------------------------------------------------------------------------------------------------//
+/**
+ * Autentica a un usuario en una base de datos MySQL usando PHP.
+ *
+ * @param string $usuario El nombre de usuario del usuario.
+ * @param string $contraseña La contraseña del usuario.
+ *
+ * @return bool Devuelve `true` si la autenticación fue exitosa, `false` si la autenticación falló.
+ */
 
 function autenticarUsuario($usuario, $contraseña) {
     $conexion = conectarBaseDeDatos();
@@ -35,9 +55,19 @@ function autenticarUsuario($usuario, $contraseña) {
 
 //--------------------------------------------------------------------------------------------
 
+
 //REGISTRO//
 
 // Verifica existente
+/**
+ * Verifica la existencia de un usuario o correo electrónico en una base de datos MySQL usando PHP.
+ *
+ * @param mysqli $conexion La conexión a la base de datos.
+ * @param string $usuario El nombre de usuario del usuario.
+ * @param string $correo El correo electrónico del usuario.
+ *
+ * @return bool Devuelve `true` si el usuario o el correo electrónico ya existe, `false` si el usuario o el correo electrónico no existe.
+ */
 function verificarExistencia($conexion, $usuario, $correo) {
     $consulta_existencia = "SELECT * FROM registrar WHERE usuario = '$usuario' OR correo = '$correo'";
     $resultado_existencia = mysqli_query($conexion, $consulta_existencia);
@@ -45,6 +75,18 @@ function verificarExistencia($conexion, $usuario, $correo) {
 }
 
 // Insertar base de datos
+
+/**
+ * Realiza un registro de usuario en una base de datos MySQL usando PHP.
+ *
+ * @param mysqli $conexion La conexión a la base de datos.
+ * @param string $usuario El nombre de usuario del usuario.
+ * @param string $correo El correo electrónico del usuario.
+ * @param string $contraseña La contraseña del usuario.
+ * @param int $tyc La aceptación de los términos y condiciones.
+ *
+ * @return bool Devuelve `true` si el registro se realizó correctamente, `false` si el registro no se pudo realizar.
+ */
 function realizarRegistro($conexion, $usuario, $correo, $contraseña, $tyc) {
     $consulta = "INSERT INTO registrar (usuario, correo, contraseña, tyc) VALUES ('$usuario', '$correo', '$contraseña', '$tyc')";
     $resultado = mysqli_query($conexion, $consulta);
@@ -52,7 +94,14 @@ function realizarRegistro($conexion, $usuario, $correo, $contraseña, $tyc) {
 }
 
 //--------------------------------------------------------------------------------------------
-
+/**
+ * Obtiene el ID de usuario de un usuario dado en una base de datos MySQL usando PHP.
+ *
+ * @param mysqli $conexion La conexión a la base de datos.
+ * @param string $usuario El nombre de usuario del usuario.
+ *
+ * @return int Devuelve el ID de usuario si se encuentra un registro coincidente, `false` si el registro no se encuentra.
+ */
 function obtenerUsuarioID($conexion, $usuario) {
     $consulta = "SELECT registrar_id FROM registrar WHERE usuario = '$usuario'";
     $resultado = mysqli_query($conexion, $consulta);
@@ -66,7 +115,14 @@ function obtenerUsuarioID($conexion, $usuario) {
 }
 
 //--------------------------------------------------------------------------------------------
-
+/**
+ * Consulta los datos de un usuario en una base de datos MySQL usando PHP.
+ *
+ * @param mysqli $conexion La conexión a la base de datos.
+ * @param string $usuario El nombre de usuario del usuario.
+ *
+ * @return string Los datos del usuario si se encuentra un registro coincidente, un mensaje de error si el registro no se encuentra.
+ */
 function consultaUsuario($conexion, $usuario) {
     $consulta = "SELECT * FROM registrar WHERE usuario = '$usuario'";
     $resultado = mysqli_query($conexion, $consulta);
@@ -83,7 +139,14 @@ function consultaUsuario($conexion, $usuario) {
 }
 
 //--------------------------------------------------------------------------------------------
-
+/**
+ * Consulta los datos de un usuario en una base de datos MySQL usando PHP.
+ *
+ * @param mysqli $conexion La conexión a la base de datos.
+ * @param int $registrar_id El ID del usuario.
+ *
+ * @return string Los datos del usuario si se encuentra un registro coincidente, un mensaje de error si el registro no se encuentra.
+ */
 function consultaId($conexion, $registrar_id) {
     $consulta = "SELECT * FROM registrar WHERE registrar_id = '$registrar_id'";
 
@@ -94,13 +157,20 @@ function consultaId($conexion, $registrar_id) {
 
         return "Nombre Usuario: " . $fila['usuario'] . "<br>" .
                "Email: " . $fila['correo'] . "<br>";
-    } else { 
+    } else {
         return "Usuario no encontrado.";
     }
 }
 
 //--------------------------------------------------------------------------------------------
-
+/**
+ * Consulta los datos de un usuario en una base de datos MySQL usando PHP.
+ *
+ * @param mysqli $conexion La conexión a la base de datos.
+ * @param int $registrar_id El ID del usuario.
+ *
+ * @return string Los datos del usuario si se encuentra un registro coincidente, un mensaje de error si el registro no se encuentra.
+ */
 function consulta_ID($conexion, $registrar_id) {
     $consulta = "SELECT * FROM registrar WHERE registrar_id = '$registrar_id'";
 
@@ -113,13 +183,20 @@ function consulta_ID($conexion, $registrar_id) {
                "Email: " . $fila['correo'] . "<br>" .
                "Contraseña: " . $fila['contraseña'] . "<br>";
 
-    } else { 
+    } else {
         return "Usuario no encontrado.";
     }
 }
 
 //--------------------------------------------------------------------------------------------
-
+/**
+ * Consulta la biografía de un usuario en una base de datos MySQL usando PHP.
+ *
+ * @param mysqli $conexion La conexión a la base de datos.
+ * @param int $registrar_id El ID del usuario.
+ *
+ * @return string La biografía del usuario si se encuentra un registro coincidente, un mensaje de error si el registro no se encuentra.
+ */
 function biografia($conexion, $registrar_id) {
     $consulta = "SELECT * FROM usuario WHERE usuario_id = '$registrar_id'";
 
@@ -130,13 +207,20 @@ function biografia($conexion, $registrar_id) {
 
         return 
                "Biografía: " . $fila['biografia'] . "<br>";
-    } else { 
+    } else {
         return "Usuario no encontrado.";
     }
 }
 
 //--------------------------------------------------------------------------------------------
-
+/**
+ * Consulta la contraseña de un usuario en una base de datos MySQL usando PHP.
+ *
+ * @param mysqli $conexion La conexión a la base de datos.
+ * @param int $registrar_id El ID del usuario.
+ *
+ * @return string La contraseña del usuario si se encuentra un registro coincidente, un mensaje de error si el registro no se encuentra.
+ */
 function consulta_Contra($conexion, $registrar_id) {
     $consulta = "SELECT * FROM registrar WHERE registrar_id = '$registrar_id'";
 
@@ -147,14 +231,21 @@ function consulta_Contra($conexion, $registrar_id) {
 
         return 
                "Contraseña: " . $fila['contraseña'] . "<br>";
-    } else { 
+    } else {
         return "Usuario no encontrado.";
     }
 }
 
 
 //--------------------------------------------------------------------------------------------
-
+/**
+ * Borra un registro de una base de datos MySQL usando PHP.
+ *
+ * @param mysqli $conexion La conexión a la base de datos.
+ * @param int $registrar_id El ID del registro que se va a borrar.
+ *
+ * @return bool True si la consulta se ha ejecutado correctamente, false si la consulta no se ha ejecutado correctamente.
+ */
 function borrar($conexion, $registrar_id) {
     $consulta = "DELETE FROM registrar WHERE registrar_id = '$registrar_id'";
     $resultado = mysqli_query($conexion, $consulta);
