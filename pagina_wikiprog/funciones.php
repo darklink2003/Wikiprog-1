@@ -289,6 +289,7 @@ function editarUsuario($conexion, $registrar_id, $usuario, $correo, $contraseña
 }
 
 //--------------------------------------------------------------------------------------------
+
 /**
  * Actualiza la biografía de un usuario en la base de datos.
  *
@@ -308,4 +309,132 @@ function editarBiografia($conexion, $registrar_id, $biografia) {
     // Ejecuta la consulta y devuelve el resultado (true si es exitosa, false si hay un error).
     return mysqli_query($conexion, $sql);
 }
+
+
+//--------------------------------------------------------------------------------------------
+
+// Function to display course information
+function llamar_tabla_curso($conexion, $curso_id) {
+    // Fetch course details from the database
+    $query = "SELECT * FROM curso where curso_id = $curso_id";
+    $result = mysqli_query($conexion, $query);
+
+    $salida = '';
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        $salida .= '<tr>';
+        $salida .= '<td>' . "Titulo: " . $row['titulo_curso'] . '</td>' . '<br>';
+        $salida .= '<td>' . "Descripcion: " . $row['descripcion'] . '</td>' . '<br>';
+        $salida .= '</tr>' . '<br>';
+    }
+
+    return $salida;
+}
+
+//--------------------------------------------------------------------------------------------
+
+    function categoria($conexion, $categoria_id) {
+        $consulta = "SELECT * FROM categoria WHERE categoria_id = '$categoria_id'";
+
+        $resultado = mysqli_query($conexion, $consulta);
+
+        if ($resultado && mysqli_num_rows($resultado) > 0) {
+            $fila = mysqli_fetch_assoc($resultado);
+
+            return 
+                "Categoria: " . $fila['descripcion'] . "<br>";
+        } else {
+            return "Usuario no encontrado.";
+        }
+    }
+
+    //--------------------------------------------------------------------------------------------
+
+    function consulta_categoria($conexion, $curso_id) {
+        $consulta = "SELECT * FROM curso WHERE curso_id = '$curso_id'";
+
+        $resultado = mysqli_query($conexion, $consulta);
+
+        if ($resultado && mysqli_num_rows($resultado) > 0) {
+            $fila = mysqli_fetch_assoc($resultado);
+
+            return 
+                "categoria_id: " . $fila['categoria_id'] . "<br>";
+        } else {
+            return "Usuario no encontrado.";
+        }
+    }
+//--------------------------------------------------------------------------------------------
+
+
+// Function to display comments
+function Comentarios($conexion, $curso_id) {
+    $query = "SELECT * FROM comentarios where curso_id = $curso_id";
+    $result = mysqli_query($conexion, $query);
+
+    $salida = '';
+
+    if ($result) {
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $salida .= '<tr>';
+                $salida .= '<td>' . "usuario: " . $row['usuario_id'] . '</td>' . '<br>';
+                $salida .= '<td>' . "comentario: " . $row['descripcion'] . '</td>' . '<br>';
+                $salida .= '<td>' . "fecha: " . $row['fecha'] . '</td>' . '<br>';
+                $salida .= '</tr>' . '<br>';
+            }
+        } else {
+            $salida .= 'No hay comentarios para este curso.';
+        }
+    } else {
+        $salida .= "Error ejecutando consulta: " . mysqli_error($conexion);
+        exit;
+    }
+
+    return $salida;
+}
+
+// Function to add a comment
+function agregar_comentario($conexion, $curso_id, $usuario_id, $descripcion) {
+    // Validate comment input
+    if (empty($descripcion)) {
+        return false;
+    }
+
+    // Prepare and execute the query
+    $query = "INSERT INTO comentarios (curso_id, usuario_id, descripcion, fecha) VALUES (?, ?, ?, NOW())";
+    $stmt = mysqli_prepare($conexion, $query);
+    mysqli_stmt_bind_param($stmt, "iis", $curso_id, $usuario_id, $descripcion);
+    $result = mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
+    return $result;
+}
+
+//--------------------------------------------------------------------------------------------
+
+
+function mostrarCursos() {
+    global $conexion, $registrar_id;
+
+    // Mostrar la información de los cursos
+    $sql = "SELECT curso_id, titulo_curso, descripcion FROM curso";
+    $result = $conexion->query($sql);
+
+    if ($result->num_rows > 0) {
+        echo "LISTA DE CURSOS:<br> <br>";
+        while ($row = $result->fetch_assoc()) {
+            $curso_id = $row["curso_id"];
+            $titulo_curso = htmlspecialchars($row["titulo_curso"]); // Escapar datos para evitar XSS
+            $descripcion = htmlspecialchars($row["descripcion"]); // Escapar datos para evitar XSS
+
+            // Agregar un enlace a una página (reemplaza 'tu_pagina.php' con la URL correcta)
+            echo "Título: <a href='curso.php?registrar_id=$registrar_id&curso_id=$curso_id'>$titulo_curso</a> Descripción: $descripcion<br>";
+        }
+    } else {
+        echo "No hay cursos disponibles en la base de datos.";
+    }
+}
+
+//--------------------------------------------------------------------------------------------
 

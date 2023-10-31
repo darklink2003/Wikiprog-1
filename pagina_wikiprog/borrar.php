@@ -18,6 +18,9 @@ if (isset($_GET['confirm']) && $_GET['confirm'] === 'yes') {
         // Llama a la función "borrarBio" para eliminar datos relacionados con el usuario
         borrarBio($conexion, $registrar_id);
         echo "Usuario eliminado con éxito.";
+        // Enlace para volver a la página de perfil
+        echo '<a href="login.php?">Volver</a>';
+        
     } else {
         echo "No se pudo eliminar el usuario.";
     }

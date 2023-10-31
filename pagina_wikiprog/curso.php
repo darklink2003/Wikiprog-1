@@ -1,74 +1,45 @@
 <?php
-
+include("funciones.php");
 require('config.php');
 
+$registrar_id = $_GET['registrar_id'];
+$usuario_id = $registrar_id;
+$curso_id = $_GET['curso_id'];
+
+// Establecer una conexión a la base de datos
 $conexion = mysqli_connect($host, $user, $password, $database);
 
-// Consulta SQL para obtener los primeros 10 registros de cursos ordenados por curso_id de forma ascendente (ASC)
-$resultadoCursos = $conexion->query("SELECT * FROM curso ORDER BY curso_id ASC LIMIT 10");
-?>
+// Obtener la ID de la categoría para un curso específico
+$categoria_id = consulta_categoria($conexion, $curso_id);
 
-<h2>Datos de Curso</h2>
-<table>
-    <tr>
-        <th>Curso ID</th>
-        <th>Titulo Curso</th>
-        <th>Descripcion</th>
-        <th>Categoria ID</th>
-    </tr>
-    <?php
-    if ($resultadoCursos->num_rows > 0) {
-        while ($fila = mysqli_fetch_assoc($resultadoCursos)) {
-            echo '<tr>';
-            echo '<td>' . $fila['curso_id'] . '</td>';
-            echo '<td>' . $fila['titulo_curso'] . '</td>';
-            echo '<td>' . $fila['descripcion'] . '</td>';
-            echo '<td>' . $fila['categoria_id'] . '</td>';
-            echo '</tr>';
-        }
-    } else {
-        echo '<tr><td colspan="6">No se encontraron resultados para cursos.</td></tr>';
-    }
-    ?>
-</table>
-
-
-<?php
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtén los datos del formulario de comentarios
-    $username = $_POST["usuario_id"];
-    $commentText = $_POST["comentarios"];
-
-    // Conecta a la base de datos (Asegúrate de tener la configuración correcta en 'config.php')
-    require('config.php');
-    $conexion = mysqli_connect($host, $user, $password, $database);
-
-    // Verifica la conexión a la base de datos
-    if (!$conexion) {
-        die("La conexión a la base de datos falló: " . mysqli_connect_error());
-    }
-
-    // Inserta el comentario en la base de datos
-    $query = "INSERT INTO comentarios (usuario, comentarios) VALUES (?, ?)";
-    $stmt = $conexion->prepare($query);
-    $stmt->bind_param("ss", $username, $commentText);
-
-    if ($stmt->execute()) {
-        // El comentario se insertó correctamente
-        echo '<p id="comment-success-message">¡Comentario enviado con éxito!</p>';
-    } else {
-        // Hubo un error al insertar el comentario
-        echo '<p id="comment-success-message">Hubo un error al enviar el comentario.</p>';
-        echo 'Error: ' . $stmt->error;
-    }
-
-    // Cierra la conexión a la base de datos
-    mysqli_close($conexion);
+// Verificar si se encontró una categoría
+if ($categoria_id != "Usuario no encontrado.") {
+    // Llamar a la función categoria para obtener la descripción
+    $categoria_id = categoria($conexion, $categoria_id);
 }
 
-?>
+// Mostrar información del curso y comentarios
+$resultado = llamar_tabla_curso($conexion, $curso_id );
+$resultado .= categoria($conexion, $curso_id). "<br>";
+$resultado .= Comentarios($conexion, $curso_id);
 
-<?php
-mysqli_close($conexion);
-?>
+// Comprobar si se ha enviado el formulario
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['descripcion']) && !empty($_POST['descripcion'])) {
+        $descripcion = $_POST['descripcion'];
+        agregar_comentario($conexion, $curso_id, $usuario_id, $descripcion);
+        // Redirigir a la misma página con registrar_id y curso_id en la URL
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?registrar_id=' . $registrar_id . '&curso_id=' . $curso_id);
+        exit;
+    } elseif (isset($_POST['descripcion']) && empty($_POST['descripcion'])) {
+        $resultado .= "El comentario no puede estar vacío";
+    }
+}
+
+// Mostrar un formulario para agregar comentarios
+echo "<form action='' method='post'>
+    <input type='text' name='descripcion' placeholder='Agrega tu comentario'>
+    <input type='submit' value='Enviar'>
+</form>";
+
+echo $resultado;
