@@ -22,6 +22,10 @@ if ($categoria_id != "Usuario no encontrado.") {
 $resultado = llamar_tabla_curso($conexion, $curso_id );
 $resultado .= categoria($conexion, $curso_id). "<br>";
 $resultado .= Comentarios($conexion, $curso_id);
+// Obtener el ID de la lección de la URL
+// Obtener el ID de la lección de la URL
+
+$resultado .= MostrarLeccion($conexion, $curso_id);
 
 // Comprobar si se ha enviado el formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

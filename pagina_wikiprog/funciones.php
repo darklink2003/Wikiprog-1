@@ -323,7 +323,7 @@ function llamar_tabla_curso($conexion, $curso_id) {
 
     while ($row = mysqli_fetch_assoc($result)) {
         $salida .= '<tr>';
-        $salida .= '<td>' . "Titulo: " . $row['titulo_curso'] . '</td>' . '<br>';
+        $salida .= '<td>' . "TITULO: " . $row['titulo_curso'] . '</td>' . '<br>';
         $salida .= '<td>' . "Descripcion: " . $row['descripcion'] . '</td>' . '<br>';
         $salida .= '</tr>' . '<br>';
     }
@@ -434,6 +434,30 @@ function mostrarCursos() {
     } else {
         echo "No hay cursos disponibles en la base de datos.";
     }
+}
+
+//--------------------------------------------------------------------------------------------
+
+function MostrarLeccion($conexion, $curso_id) {
+    $conexion = conectarBaseDeDatos();
+    // Consulta para obtener los datos de la tabla "curso"
+    $resultado = "SELECT * FROM leccion where curso_id =$curso_id";
+    $resultado = mysqli_query($conexion, $resultado);
+
+    // Inicializar `$salida`
+    $salida = '';
+    $salida .= 'LECCIONES'.'<br>';
+    // Mostrar los datos de la tabla "curso"
+    while ($fila = mysqli_fetch_assoc($resultado)) {
+       
+        $salida .= '<tr >';
+        $salida .= '<td>' ."Titulo:  ". $fila['titulo'] . '</td>' . '<br>';
+        $salida .= '<td>' ."Descripcion:  ". $fila['descripcion'] . '</td>' . '<br>';
+        $salida .= '</tr>'.'<br>';
+    }
+
+    // Devolver `$salida`
+    return $salida;
 }
 
 //--------------------------------------------------------------------------------------------
