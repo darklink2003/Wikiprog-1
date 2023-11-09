@@ -25,7 +25,14 @@ echo $resultados;
 ?>
 
 <!-- Enlaces a otras páginas -->
-<a href="borrar.php?registrar_id=<?php echo $registrar_id?>">Borrar Datos</a>
-<a href="editar.php?registrar_id=<?php echo $registrar_id?>">Editar Datos</a>
-<a href="login.php?">Cerrar Sesión</a> <br> <br>
-<a href="index.php?registrar_id=<?php echo $registrar_id?>">INICIO</a>
+<?php
+if (!empty($registrar_id)) {
+    echo '<br> <a href="editar.php?registrar_id=' . $registrar_id . '">Editar Datos</a>  ';
+    echo '<a href="borrar.php?registrar_id=' . $registrar_id . '">Borrar Datos</a> ';
+    echo '<a href="login.php">Cerrar Sesión</a> <br> <br>';
+} else {
+    echo '<a href="login.php">Iniciar Sesión</a> <br> <br>';
+}
+
+echo '<a href="index.php?registrar_id=' . $registrar_id . '">INICIO</a>';
+?>

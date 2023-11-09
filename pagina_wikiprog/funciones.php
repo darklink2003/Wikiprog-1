@@ -91,6 +91,25 @@ function realizarRegistro($conexion, $usuario, $correo, $contraseña, $tyc) {
 }
 
 //--------------------------------------------------------------------------------------------
+
+/**
+ * Realiza un registro de usuario en una base de datos MySQL usando PHP.
+ *
+ * @param mysqli $conexion La conexión a la base de datos.
+ * @param string $usuario El nombre de usuario del usuario.
+ * @param string $correo El correo electrónico del usuario.
+ * @param string $contraseña La contraseña del usuario.
+ * @param int $tyc La aceptación de los términos y condiciones.
+ *
+ * @return bool Devuelve `true` si el registro se realizó correctamente, `false` si el registro no se pudo realizar.
+ */
+function Registro_Biografia($conexion, $registrar_id) {
+    $consulta = "INSERT INTO usuario (usuario_id, biografia, rango_id) VALUES ('$registrar_id', 'Usuario Nuevo', '1')";
+    $resultado = mysqli_query($conexion, $consulta);
+    return $resultado;
+}
+
+//--------------------------------------------------------------------------------------------
 /**
  * Obtiene el ID de usuario de un usuario dado en una base de datos MySQL usando PHP.
  *
@@ -425,7 +444,7 @@ function mostrarCursos() {
         echo "LISTA DE CURSOS:<br> <br>";
         while ($row = $result->fetch_assoc()) {
             $curso_id = $row["curso_id"];
-            $titulo_curso = htmlspecialchars($row["titulo_curso"]); // Escapar datos para evitar XSS
+            $titulo_curso = htmlspecialchars($row["titulo_curso"]). "<br>"; // Escapar datos para evitar XSS
             $descripcion = htmlspecialchars($row["descripcion"]); // Escapar datos para evitar XSS
 
             // Agregar un enlace a una página (reemplaza 'tu_pagina.php' con la URL correcta)

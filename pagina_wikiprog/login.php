@@ -40,3 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 
 ?>
+
+<br>
+<a href="registro.php">Registrarse</a>
+

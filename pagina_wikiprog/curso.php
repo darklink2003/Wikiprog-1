@@ -21,7 +21,8 @@ if ($categoria_id != "Usuario no encontrado.") {
 // Mostrar información del curso y comentarios
 $resultado = llamar_tabla_curso($conexion, $curso_id );
 $resultado .= categoria($conexion, $curso_id). "<br>";
-$resultado .= Comentarios($conexion, $curso_id);
+$resultado .= Comentarios($conexion, $curso_id). "<br>". "<br>";
+
 // Obtener el ID de la lección de la URL
 // Obtener el ID de la lección de la URL
 
