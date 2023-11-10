@@ -1,0 +1,6 @@
+Procure que al importar la base de datos colocarle el nombre de wikiprog o si desea cambiarle el nombre abra el archivo llamado "config.php" y cambie el nombre en
+$database = 'Nuevo Nombre'
+
+A la hora de importar la base de datos revise que se importen todas sus tablas, cuenta con las siguientes tablas
+archivo, categoria, comentarios, curso, inscripcion, leccion, privacidad, rango, registrar, usuario
+
