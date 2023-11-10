@@ -1,0 +1,27 @@
+http://localhost/pagina_wikiprog/index.php
+primero se le mostrara al usuario un pequeño menú con 2 opciones cursos y perfil, previamente el usuario debe haber iniciado sesión en caso de no haberlo hecho se le mostrara en la pestaña de perfil la opción de iniciar sesión
+http://localhost/pagina_wikiprog/perfil.php?registrar_id=
+que le mostrara un nuevo menú con 2 opciones iniciar sesión que lo enviara al login y la segunda opción, inicio que lo regresara al índex "inicio"
+http://localhost/pagina_wikiprog/login.php?usuario= &contraseña=
+se le solicita al usuario que ingrese sus datos "usuario, contraseña" también se le mostrara una opción de registrarse en caso de que el usuario no tenga un perfil
+http://localhost/pagina_wikiprog/registro.php?usuario= &correo= &contraseña=
+se le solicita al usuario que ingrese los datos "usuario, correo, contraseña", al registrarse lo va a dirigir al login para poder iniciar sesión, después de ingresar los datos para iniciar sesión se le dirigirá al inicio
+http://localhost/pagina_wikiprog/index.php?registrar_id=1
+en el inicio le mostrara 2 botones los cuales son "cursos y perfil", 
+http://localhost/pagina_wikiprog/perfil.php?registrar_id=1
+al darle en perfil nos mostrara los datos del usuario como "nombre, correo, biografía" en el cual es usuario tendrá las opciones de editar sus datos, borrar sus datos, cerrar sesión o inicio
+1- editar datos
+http://localhost/pagina_wikiprog/editar.php?registrar_id=1&usuario= &correo= &contraseña= &biografia=
+en este apartado el usuario debe de ingresar los datos que desea cambiar o conservar, al realizar el cambio correcto lo enviara a su perfil
+2- borrar datos
+http://localhost/pagina_wikiprog/borrar.php?registrar_id=1
+lo dirigirá a un aparatado en el cual le mostrará un mensaje de verificación "¿Estás seguro de que deseas eliminar este usuario?Sí | No", al darle clic a cualquiera de las opciones borrará el perfil o volverá al perfil
+3- cerrar sesión
+http://localhost/pagina_wikiprog/login.php?usuario= &contraseña=
+lo enviara al login para poder iniciar sesión nuevamente
+y con la opción inicio lo devolverá al índex en el cual le mostrara 2 botones los cuales son "cursos y perfil", 
+Cursos
+http://localhost/pagina_wikiprog/cursos.php?registrar_id=1
+se mostrará la lista de cursos disponibles con su "título y descripción" del curso, al darle clic en cualquiera de los cursos
+http://localhost/pagina_wikiprog/curso.php?registrar_id=1&curso_id=1
+se abrirá información sobre el curso, entre ellos "titulo, descripción, categoría", también tiene su apartado para poder agregar su comentario con información "usuario, el comentario, fecha y hora" y también mostrara las lecciones que usted adjuntas al curso correspondiente
