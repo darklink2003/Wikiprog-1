@@ -2,5 +2,18 @@ Procure que al importar la base de datos colocarle el nombre de wikiprog o si de
 $database = 'Nuevo Nombre'
 
 A la hora de importar la base de datos revise que se importen todas sus tablas, cuenta con las siguientes tablas
-archivo, categoria, comentarios, curso, inscripcion, leccion, privacidad, rango, registrar, usuario
+los de contenido del usuario
+archivo:archivo_id,usuario_id,nombre,fecha,tamaño,privacidad_id
+privacidad:privacidad_id, tipo
+
+los relacionados con los cursos 
+categoria:categoria_id, descripcion
+comentarios:comentario_id, usuario_id, comentario, fecha, curso_id
+curso:curso_id, titulo_curso, descripcion, categoria_id
+leccion:leccion_id, titulo, descripcion, curso_id
+
+los relacionados con los usuarios 
+rango:rango_id, descripcion
+registrar:registrar_id, usuario, correo, contraseña, terminos_y_condiciones
+usuario:usuario_id, usuario, correo, biografia, contraseña, rango_id
 
